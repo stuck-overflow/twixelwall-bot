@@ -1,0 +1,12 @@
+[twitch] 
+login_name = 'your_bot_name'
+channel_name = 'twixelwall'
+client_id = 'YOURCLIENTID'
+secret = 'YOURSECRET'
+token_filepath = '.twitchauthtoken.json'
+
+[twixel]
+img_filepath = 'twixelwall.png'
+width = 100
+height = 100
+

@@ -1,0 +1,23 @@
+[package]
+name = "twixelwall-bot"
+version = "0.1.0"
+authors = ["stuckoverflow2021"]
+edition = "2018"
+
+[dependencies]
+log = "0.4"
+serde = {version= "1.0", features =["derive"]}
+simple_logger = "1.11"
+structopt = "0.3"
+tokio = { version = "1", features = ["full"]}
+toml = "0.5"
+twitch_oauth2_auth_flow = { git = "https://github.com/stuck-overflow/twitch_oauth2_auth_flow", branch = "main" }
+async-trait = "0.1.42"
+chrono = "0.4"
+oauth2 = "4.0.0-alpha"
+twitch_api2 = { features = ["client", "helix", "surf_client", "twitch_oauth2"], git = "https://github.com/Emilgardis/twitch_api2/", branch = "master"  }
+twitch-irc = { version = "2.2.0", features = ["refreshing-token"] }
+serde_json = "1.0"
+openssl = { version = "0.10", features = ["vendored"] }
+image = "0.23"
+
