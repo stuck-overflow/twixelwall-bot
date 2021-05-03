@@ -9,6 +9,7 @@ log = "0.4"
 serde = {version= "1.0", features =["derive"]}
 simple_logger = "1.11"
 structopt = "0.3"
+tempfile = "3"
 tokio = { version = "1", features = ["full"]}
 toml = "0.5"
 twitch_oauth2_auth_flow = { git = "https://github.com/stuck-overflow/twitch_oauth2_auth_flow", branch = "main" }

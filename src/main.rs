@@ -8,6 +8,7 @@ use simple_logger::SimpleLogger;
 use std::convert::TryFrom;
 use std::fs;
 use structopt::StructOpt;
+use tempfile::tempdir;
 use token_storage::CustomTokenStorage;
 use twitch_api2::twitch_oauth2::Scope;
 use twitch_irc::login::{RefreshingLoginCredentials, TokenStorage};
@@ -18,7 +19,6 @@ use twitch_irc::{ClientConfig, TCPTransport, TwitchIRCClient};
 struct TwixelWallBotConfig {
     twitch: TwitchConfig,
     twixel: TwixelConfig,
-    // obs: Option<ObsConfig>,
 }
 
 #[derive(Clone, Deserialize)]
@@ -166,11 +166,19 @@ pub async fn main() {
                     let mut img = ImageReader::open(config.twixel.img_filepath.to_owned())
                         .unwrap()
                         .decode()
-                        .unwrap();
-                    if let DynamicImage::ImageRgb8(ref mut b) = img {
-                        b.put_pixel(command.x, command.y, Rgb([command.r, command.g, command.b]));
+                        .unwrap()
+                        .to_rgb8();
+
+                    img.put_pixel(command.x, command.y, Rgb([command.r, command.g, command.b]));
+
+                    let tmpdir = tempdir().unwrap();
+                    let tmpfile = tmpdir.path().join("img.png");
+                    if let Err(e) = img.save(&tmpfile) {
+                        eprintln!("Unable to save to tmpfile: {}", e);
+                        continue;
                     }
-                    let _ = img.save(config.twixel.img_filepath.to_owned());
+
+                    fs::rename(tmpfile, &config.twixel.img_filepath).unwrap();
                 }
                 _ => continue,
             }
