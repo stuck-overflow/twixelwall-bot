@@ -7,6 +7,6 @@ token_filepath = '.twitchauthtoken.json'
 
 [twixel]
 img_filepath = 'twixelwall.png'
-width = 100
-height = 100
+width = 512
+height = 512
 
