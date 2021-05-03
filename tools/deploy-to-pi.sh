@@ -6,7 +6,7 @@ set -o pipefail
 set -o xtrace
 
 readonly TARGET_HOST=twixelwall@twixelwall
-readonly TARGET_PORT=2222
+readonly TARGET_PORT=22
 readonly TARGET_PATH=/home/twixelwall/bin/twixelwall-bot
 readonly TARGET_ARCH=armv7-unknown-linux-gnueabihf
 readonly SOURCE_PATH=./target/${TARGET_ARCH}/release/twixelwall-bot
