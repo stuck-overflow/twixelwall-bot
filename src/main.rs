@@ -1,7 +1,7 @@
 mod token_storage;
 
 use image::io::Reader as ImageReader;
-use image::{DynamicImage, Rgb};
+use image::{Pixel, Rgba};
 use log::{debug, trace, LevelFilter};
 use serde::Deserialize;
 use simple_logger::SimpleLogger;
@@ -56,6 +56,7 @@ struct Command {
     r: u8,
     g: u8,
     b: u8,
+    a: u8,
 }
 
 impl TryFrom<String> for Command {
@@ -66,7 +67,7 @@ impl TryFrom<String> for Command {
         println!("{:?}", r);
         match r {
             Ok(v) => {
-                if v.len() != 5 {
+                if !(5..7).contains(&v.len()) {
                     return Err("too many args");
                 }
                 if v[2] > 255 || v[3] > 255 || v[4] > 255 {
@@ -78,6 +79,7 @@ impl TryFrom<String> for Command {
                     r: v[2] as u8,
                     g: v[3] as u8,
                     b: v[4] as u8,
+                    a: if v.len() == 6 { v[5] as u8 } else { 255 },
                 })
             }
             Err(_) => Err("error parsing"),
@@ -167,10 +169,9 @@ pub async fn main() {
                         .unwrap()
                         .decode()
                         .unwrap()
-                        .to_rgb8();
-
-                    img.put_pixel(command.x, command.y, Rgb([command.r, command.g, command.b]));
-
+                        .to_rgba8();
+                    img.get_pixel_mut(command.x, command.y)
+                        .blend(&Rgba([command.r, command.g, command.b, command.a]));
                     let tmpdir = tempdir().unwrap();
                     let tmpfile = tmpdir.path().join("img.png");
                     if let Err(e) = img.save(&tmpfile) {
